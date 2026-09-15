@@ -83,3 +83,11 @@ Unknown discovery starts broad with `lt_tool_list({limit:20})`. Filtered zero re
 **Reason:** Validation evidence belongs to an exact source identity. Rebasing mid-gate would invalidate test provenance and obscure whether regressions come from the feature or upstream movement.
 
 **Status:** Active
+
+## D011 — Long SSH-launched tests must be truly session-detached
+
+**Decision:** Long-running validation started through the SSH-session tooling must use a process/session-detached launcher such as `setsid` and persist its log plus final exit status to files. Do not rely on `nohup` alone.
+
+**Reason:** A controlled reproduction showed that the existing `nohup -> shell wrapper -> Node child` pattern receives a hangup when its SSH PTY is closed and returns exit code `129`. The equivalent `setsid` control survived session closure and exited normally.
+
+**Status:** Active

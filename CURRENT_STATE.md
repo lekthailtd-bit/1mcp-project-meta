@@ -54,14 +54,41 @@ Current feature work includes:
 - 2026-09-15 audit rerun: template-server MetaToolProvider suite 9/9 passed;
 - `git diff --check`: passed.
 
-The detached final full E2E run for the exact candidate identity was **interrupted**, not green:
+## Full E2E diagnosis
+
+The detached full E2E run for the exact candidate identity was **interrupted and also encountered one upstream-baseline test failure**. These are two separate issues:
 
 - base HEAD: `f03d8aa239608696d3ada5747bf538a799d388ce`
 - uncommitted diff SHA-256: `d6ace3ad1cffb0b32e9b2b5afb0faf330d68e290e6aa20aa3aa0363e584172de`
-- persisted exit code: `129`
-- log ended while tests were still passing and contained no Vitest completion summary or explicit test failure.
+- persisted process exit code: `129`
 
-Treat that run as inconclusive and rerun the full E2E gate after the audit findings below are corrected.
+### Runner termination
+
+The `129` was caused by SSH/PTTY hangup, not a Vitest completion result.
+
+Evidence:
+
+- the long run ended at approximately the SSH session's 30-minute idle-cleanup boundary;
+- a controlled reproduction using the same `nohup -> shell wrapper -> Node child` shape produced `exit_code=129` and an explicit `Hangup` when the SSH session was closed;
+- a control using `setsid` survived the same SSH-session close and completed with exit code `0`.
+
+Future long-running validation launched through SSH must use a truly session-detached launcher such as `setsid`, with persisted log/status files. `nohup` alone is insufficient in this environment.
+
+### Upstream-baseline E2E failure
+
+Before the hangup, `test/e2e/commands/error-scenarios.test.ts` failed:
+
+`Resource Exhaustion Scenarios > should handle rapid repeated operations`
+
+This is **not introduced by the lazy patch**:
+
+- the test file is byte-identical between the feature branch and current upstream;
+- untouched stock upstream 0.37.0 at `50af86018c6582f04de97212dec5072e54df6b46` reproduces the same failure with `0/20` successful operations;
+- the test launches 20 CLI status processes concurrently, and the shared test runner enforces a 10-second timeout per process;
+- on the current 2-logical-CPU integration runner, an explicit 10-second parallel reproduction timed out all 20 operations;
+- the same 20 parallel status operations all succeed when allowed to finish without that 10-second cutoff.
+
+Classify this as an environment-sensitive upstream-baseline E2E failure, not evidence of a lazy-patch regression. Do not weaken or modify the unrelated upstream test as part of this patch merely to make the local gate green.
 
 ## 2026-09-15 patch audit status
 
@@ -104,9 +131,10 @@ See `upstream/issue-406.md`.
 1. Correct the two must-fix issues strictly within the lazy patch.
 2. Add focused regression tests for visibility, per-session template isolation, and effective instruction overrides.
 3. Tighten the smaller hardening items without unrelated 1MCP refactoring.
-4. Rerun focused/static/unit/admin/targeted E2E as appropriate, then rerun the full E2E gate to a real completion summary.
-5. Commit and push the strengthened 0.37.0-based candidate normally with hooks enabled.
-6. Update this file with the resulting commit SHA and final validation state.
-7. Post the sanitized #406 benchmark follow-up only after the candidate is genuinely green.
-8. Compare the pinned candidate with current upstream 0.38.0 and decide explicitly whether to rebase/update before further release work.
-9. Continue the planned dual-install release/switcher work without altering live production until its isolated validation is complete.
+4. Rerun focused/static/unit/admin/targeted E2E as appropriate.
+5. Rerun full E2E with a verified `setsid`-style detached launcher and compare any remaining failures against the untouched stock baseline; do not require an unrelated environment-sensitive upstream test to become green through patch-local changes.
+6. Commit and push the strengthened 0.37.0-based candidate normally with hooks enabled.
+7. Update this file with the resulting commit SHA and final validation state.
+8. Post the sanitized #406 benchmark follow-up only after the candidate is genuinely green on patch-relevant validation.
+9. Compare the pinned candidate with current upstream 0.38.0 and decide explicitly whether to rebase/update before further release work.
+10. Continue the planned dual-install release/switcher work without altering live production until its isolated validation is complete.
