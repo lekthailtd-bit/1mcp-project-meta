@@ -1,0 +1,39 @@
+# Secrets / credentials
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+*token*
+*cookie*
+*credential*
+*auth-state*
+*storage-state*
+
+# Browser/session/runtime state
+browser-profile/
+profiles/
+sessions/
+playwright-report/
+test-results/
+
+# Raw logs and large transient captures
+*.log
+*.har
+*.trace
+*.zip
+*.tar
+*.tgz
+
+# Local/editor noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Dependency/build trees do not belong in this meta repo
+node_modules/
+build/
+dist/
+coverage/
