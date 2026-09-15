@@ -1,11 +1,12 @@
 # Integration / Release Validation
 
+This is a sanitized architecture note. Internal hostnames, IPs, filesystem paths, private URLs, and credentials do not belong in this public repository.
+
 ## Current separation
 
 - Live production: 1MCP `0.32.2`
 - Source fork target: 1MCP `0.37.0`
-- Fork checkout: `/opt/1mcp/src/agent`
-- Stock upstream comparison worktree: `/opt/1mcp/src/upstream`
+- A stock-upstream worktree/build and a Lek Thai fork worktree/build are kept independently comparable in the authorized integration environment.
 
 Production must remain untouched while source/build/test work is being validated unless the user explicitly approves activation.
 

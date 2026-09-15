@@ -18,10 +18,10 @@ When sources disagree, stop and identify the discrepancy. Current source Git sta
 
 - `lekthailtd-bit/agent` — canonical Lek Thai source-code fork of `1mcp-app/agent`.
 - `1mcp-app/agent` — canonical upstream project for current upstream behaviour and accepted design.
-- `lekthailtd-bit/1mcp-project-meta` — canonical Lek Thai continuity, decisions, upstream-interaction notes, deployment state, and handoffs.
+- `lekthailtd-bit/1mcp-project-meta` — canonical **sanitized** Lek Thai continuity, decisions, upstream-interaction notes, release/deployment state, and handoffs.
 - ChatGPT Project memory and individual conversations are convenience context only; they never outrank Git.
 
-Do not copy 1MCP source code into this meta repository. Do not put private Lek Thai operational/chat metadata into the upstream-compatible source fork unless it is genuinely part of an upstream-quality code change.
+Do not copy 1MCP source code into this meta repository. Do not put Lek Thai continuity/operational chat records into the upstream-compatible source fork unless they are genuinely part of an upstream-quality source change.
 
 ## 3. Lekthai2 / lazy 1MCP namespace contract
 
@@ -59,7 +59,7 @@ Production changes require explicit user agreement.
 
 Unless deployment is explicitly in scope:
 
-- do not change `business-mcp.service`;
+- do not change the live service definition;
 - do not change production 1MCP configuration or arguments;
 - do not replace the live binary;
 - do not restart production merely to test source changes.
@@ -81,7 +81,7 @@ Do not claim a test suite passed until its final exit/result is observed.
 
 ## 7. Chat continuity
 
-Keep chat records lightweight.
+Keep chat records lightweight and sanitized.
 
 Use `chats/YYYY-MM-DD-short-topic/` only for substantive work that benefits from durable continuity. Prefer:
 
@@ -98,11 +98,19 @@ Put durable cross-chat decisions in `DECISIONS.md`.
 - Mark decisions superseded rather than silently deleting historical rationale.
 - Experiments and transient test output belong in chat/upstream/deployment notes, not the decision ledger.
 
-## 9. Secrets and sensitive material
+## 9. Public-repository security boundary
 
-Never commit replayable secrets, tokens, cookies, passwords, private keys, browser profiles, credential stores, raw auth state, or secret-bearing logs.
+Until an explicit decision records otherwise, treat this repository as public even if a client UI appears to imply otherwise.
 
-Internal hostnames, paths, versions, architecture, and non-secret operational notes may be recorded when useful, but minimise them to what future project work actually needs.
+Never commit:
+
+- replayable secrets, tokens, cookies, passwords, private keys, credentials, or raw auth state;
+- browser profiles or credential stores;
+- internal hostnames/IPs, private URLs, local infrastructure paths, or secret-bearing logs;
+- customer/order/personally identifying business data;
+- raw conversation exports.
+
+Use sanitized abstractions such as “integration host” or “live service” where operational context is needed.
 
 ## 10. Completion discipline
 
@@ -111,7 +119,7 @@ At the end of substantive work:
 1. source changes belong in `lekthailtd-bit/agent`, not here;
 2. update `CURRENT_STATE.md` to remove stale state and record the new verified state;
 3. update `DECISIONS.md` only if a durable decision changed;
-4. add/update a lightweight chat or upstream/deployment note when it materially improves continuity;
+4. add/update a lightweight sanitized chat or upstream/deployment note when it materially improves continuity;
 5. leave one explicit next action or state that no action remains.
 
 The standard is: **Git is durable truth; chats are disposable working sessions.**

@@ -1,6 +1,6 @@
 # 1MCP Project Meta
 
-Private continuity and operational metadata for Lek Thai's 1MCP work.
+Durable, **public-safe** continuity metadata for Lek Thai's 1MCP work.
 
 This repository is **not** the 1MCP source fork. Source code lives in:
 
@@ -13,13 +13,19 @@ Start with `AGENTS.md`, then `CURRENT_STATE.md`.
 
 Keep durable project context outside individual ChatGPT conversations without polluting the upstream-compatible source fork.
 
-This repository may contain internal operational context, but must never contain credentials, tokens, private keys, session cookies, browser profiles, or other replayable secrets.
+## Visibility / security boundary
+
+GitHub currently reports this repository as **public**.
+
+Therefore commit only sanitized project metadata here. Never commit credentials, tokens, private keys, cookies, browser/auth state, internal hostnames/IPs, private URLs, local infrastructure paths, customer/business-sensitive data, or raw secret-bearing logs.
+
+If repository visibility is deliberately changed later, update the recorded decision first; do not silently relax the security boundary.
 
 ## Layout
 
 - `AGENTS.md` — canonical instructions for agents working on this project.
-- `CURRENT_STATE.md` — concise, current operational/project state and next actions.
+- `CURRENT_STATE.md` — concise, current project state and next actions.
 - `DECISIONS.md` — durable cross-chat decisions and supersessions.
-- `chats/` — lightweight chat TL;DR and handover records.
+- `chats/` — lightweight sanitized chat TL;DR and handover records.
 - `upstream/` — notes for upstream issues, PRs, benchmarks, and contribution evidence.
-- `deployment/` — non-secret deployment/runtime architecture and validation notes.
+- `deployment/` — sanitized release/deployment architecture and validation notes.

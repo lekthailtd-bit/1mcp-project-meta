@@ -4,9 +4,9 @@ Durable cross-chat decisions for the Lek Thai 1MCP project.
 
 ## D001 — Separate source and project metadata
 
-**Decision:** Keep 1MCP source changes in `lekthailtd-bit/agent` and project continuity/operational metadata in `lekthailtd-bit/1mcp-project-meta`.
+**Decision:** Keep 1MCP source changes in `lekthailtd-bit/agent` and sanitized project continuity/operational metadata in `lekthailtd-bit/1mcp-project-meta`.
 
-**Reason:** Preserve an upstream-compatible source fork while keeping internal deployment/chat material out of source history.
+**Reason:** Preserve an upstream-compatible source fork while giving ChatGPT/Codex a separate continuity surface.
 
 **Status:** Active
 
@@ -65,5 +65,13 @@ Unknown discovery starts broad with `lt_tool_list({limit:20})`. Filtered zero re
 **Decision:** ChatGPT Project-level instructions should be no more than 10 lines and should point agents to this repository's `AGENTS.md` and `CURRENT_STATE.md` rather than duplicating operational rules.
 
 **Reason:** Avoid instruction drift and save context in every fresh conversation.
+
+**Status:** Active
+
+## D009 — Public-safe meta repository
+
+**Decision:** Treat `lekthailtd-bit/1mcp-project-meta` as public-safe unless a later explicit decision records a deliberate visibility change. Do not commit internal hostnames/IPs, private URLs, infrastructure paths, raw chat exports, credentials/auth state, or customer/business-sensitive data.
+
+**Reason:** The repository was discovered during initial sanity review to be publicly visible. Continuity must not depend on sensitive internal details.
 
 **Status:** Active

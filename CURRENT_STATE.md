@@ -16,10 +16,8 @@ This file is intentionally concise and should be **edited in place** as state ch
 - Upstream base commit used for current fork work: `50af86018c6582f04de97212dec5072e54df6b46`
 - Current source feature branch: `feat/lazy-instructions-metatool`
 - Current remote feature HEAD: `f03d8aa239608696d3ada5747bf538a799d388ce`
-- Integration checkout: `/opt/1mcp/src/agent`
-- Stock-upstream comparison worktree: `/opt/1mcp/src/upstream`
 
-The current integration checkout also contains validated-but-not-yet-committed strengthening work. Inspect Git before relying on this summary.
+The active source checkout also contains validated-but-not-yet-committed strengthening work. Inspect source Git before relying on this summary.
 
 ## Feature goal
 
@@ -39,24 +37,22 @@ Current feature work includes:
 - focused affected tests: 239/239 passed;
 - full static/lint/type/build/SDK gate: passed;
 - targeted lazy-loading E2E: 25/25 passed;
-- browser-smoke E2E after staging Chromium install: 23/23 passed;
+- browser-smoke E2E after installing its staging-only browser prerequisite: 23/23 passed;
 - full unit regression: 362/362 files, 5,370/5,370 tests passed;
 - full admin regression: 19/19 files, 201/201 tests passed.
 
-A final full E2E rerun is currently detached with output/status persisted under `/tmp/1mcp-e2e-latest.*`. Do not claim that final full E2E gate is green until its saved exit/result is read.
+A final full E2E rerun has been launched detached on the authorized integration environment. Do not claim that final full E2E gate is green until its persisted exit/result is read.
 
-At detached-run launch, the tested source state was:
+At detached-run launch, the tested source identity was:
 
 - base HEAD: `f03d8aa239608696d3ada5747bf538a799d388ce`
 - uncommitted diff SHA-256: `d6ace3ad1cffb0b32e9b2b5afb0faf330d68e290e6aa20aa3aa0363e584172de`
 
 ## Production
 
-Production remains deliberately separate:
+Production remains deliberately separate on live 1MCP `0.32.2`.
 
-- live 1MCP version: `0.32.2`
-- service: `business-mcp.service`
-- current source/fork validation must not be treated as a production deployment.
+Current source/fork validation must not be treated as a production deployment.
 
 Do not switch production until the stock 0.37.0 build, Lek Thai fork build, release layout, switcher, smoke tests, and rollback path are all verified and the user explicitly agrees to activation.
 
@@ -70,7 +66,7 @@ See `upstream/issue-406.md`.
 
 ## Immediate next actions
 
-1. Read the detached full E2E status/log and record the final result.
+1. Read the detached full E2E result and record the final outcome.
 2. If green, inspect the source diff, commit and push the strengthened candidate normally with hooks enabled.
 3. Update this file with the resulting commit SHA and final validation state.
 4. Post the sanitized #406 benchmark follow-up.
