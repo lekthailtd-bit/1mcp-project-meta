@@ -46,7 +46,7 @@ Unknown discovery starts broad with `lt_tool_list({limit:20})`. Filtered zero re
 
 ## D006 — Side-by-side release safety
 
-**Decision:** Preserve the existing live 1MCP `0.32.2` installation as a fallback while building and validating side-by-side stock-upstream and Lek Thai-fork `0.37.0` releases. Production activation is a separate explicit step.
+**Decision:** Preserve the existing live 1MCP `0.32.2` installation as a fallback while building and validating side-by-side stock-upstream and Lek Thai-fork candidate releases. Production activation is a separate explicit step.
 
 **Reason:** Allows clean A/B comparison and rollback without overwriting the known live installation.
 
@@ -73,5 +73,13 @@ Unknown discovery starts broad with `lt_tool_list({limit:20})`. Filtered zero re
 **Decision:** Treat `lekthailtd-bit/1mcp-project-meta` as public-safe unless a later explicit decision records a deliberate visibility change. Do not commit internal hostnames/IPs, private URLs, infrastructure paths, raw chat exports, credentials/auth state, or customer/business-sensitive data.
 
 **Reason:** The repository was discovered during initial sanity review to be publicly visible. Continuity must not depend on sensitive internal details.
+
+**Status:** Active
+
+## D010 — Do not move a validated candidate underfoot
+
+**Decision:** If upstream advances while a source candidate is under active validation, preserve and finish recording that exact candidate first. Do not silently rebase/merge current upstream into it. Compare against the new upstream state afterwards and make the upgrade/rebase decision explicitly.
+
+**Reason:** Validation evidence belongs to an exact source identity. Rebasing mid-gate would invalidate test provenance and obscure whether regressions come from the feature or upstream movement.
 
 **Status:** Active

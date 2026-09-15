@@ -12,10 +12,16 @@ This file is intentionally concise and should be **edited in place** as state ch
 
 ## Source baseline
 
-- Upstream target version: 1MCP `0.37.0`
-- Upstream base commit used for current fork work: `50af86018c6582f04de97212dec5072e54df6b46`
-- Current source feature branch: `feat/lazy-instructions-metatool`
-- Current remote feature HEAD: `f03d8aa239608696d3ada5747bf538a799d388ce`
+Current patch candidate:
+
+- pinned source version: 1MCP `0.37.0`
+- pinned upstream base commit: `50af86018c6582f04de97212dec5072e54df6b46`
+- current source feature branch: `feat/lazy-instructions-metatool`
+- current remote feature HEAD: `f03d8aa239608696d3ada5747bf538a799d388ce`
+
+During the 2026-09-15 meta-repository sanity review, upstream `main` was observed at package version `0.38.0`, commit `0971cc1d87b0b1e0155cd3bf2a355bc2ab3fe449`.
+
+Therefore the active candidate is intentionally behind current upstream. Do **not** silently rebase or merge upstream into the validated candidate. Finish/record the current candidate first, then inspect upstream changes and decide explicitly whether a rebase/update is required.
 
 The active source checkout also contains validated-but-not-yet-committed strengthening work. Inspect source Git before relying on this summary.
 
@@ -54,7 +60,7 @@ Production remains deliberately separate on live 1MCP `0.32.2`.
 
 Current source/fork validation must not be treated as a production deployment.
 
-Do not switch production until the stock 0.37.0 build, Lek Thai fork build, release layout, switcher, smoke tests, and rollback path are all verified and the user explicitly agrees to activation.
+Do not switch production until the stock/fork release layout, switcher, smoke tests, rollback path, and selected target version are all verified and the user explicitly agrees to activation.
 
 ## Upstream interaction
 
@@ -67,7 +73,8 @@ See `upstream/issue-406.md`.
 ## Immediate next actions
 
 1. Read the detached full E2E result and record the final outcome.
-2. If green, inspect the source diff, commit and push the strengthened candidate normally with hooks enabled.
+2. If green, inspect the source diff, commit and push the strengthened 0.37.0-based candidate normally with hooks enabled.
 3. Update this file with the resulting commit SHA and final validation state.
 4. Post the sanitized #406 benchmark follow-up.
-5. Continue the planned dual-install release/switcher work without altering live production until its isolated validation is complete.
+5. Compare the pinned candidate with current upstream 0.38.0 and decide explicitly whether to rebase/update before further release work.
+6. Continue the planned dual-install release/switcher work without altering live production until its isolated validation is complete.
